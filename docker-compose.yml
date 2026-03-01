@@ -1,0 +1,55 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: analyzer_postgres
+    environment:
+      POSTGRES_DB: analyzer_db
+      POSTGRES_USER: analyzer_user
+      POSTGRES_PASSWORD: analyzer_pass
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U analyzer_user -d analyzer_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./tcp_project (2)
+      dockerfile: Dockerfile
+    container_name: analyzer_backend
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/analyzer_db
+      - SPRING_DATASOURCE_USERNAME=analyzer_user
+      - SPRING_DATASOURCE_PASSWORD=analyzer_pass
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - app-network
+
+  frontend:
+    build:
+      context: ./performance-dashboard
+      dockerfile: Dockerfile
+    container_name: analyzer_frontend
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  postgres_data:

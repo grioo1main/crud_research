@@ -1,0 +1,53 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.4.1'
+    id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'com.lum1nar'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Web (REST контроллеры)
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    // JPA + Hibernate (работа с БД)
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+    // PostgreSQL драйвер
+    runtimeOnly 'org.postgresql:postgresql'
+
+    // Lombok (геттеры сеттеры и тд)
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    // Devtools (автоперезапуск)
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+    // Docker Compose поддержка
+    developmentOnly 'org.springframework.boot:spring-boot-docker-compose'
+
+    // Тесты
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
