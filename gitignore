@@ -1,0 +1,14 @@
+
+src/main/resources/application.yaml
+src/main/resources/application.yml
+src/main/resources/application.properties
+
+
+target/
+*.class
+*.jar
+*.war
+*.log
+.idea/
+*.iml
+.DS_Store
