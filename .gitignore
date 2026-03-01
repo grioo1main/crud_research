@@ -2,7 +2,7 @@
 **/application.yaml
 **/application.yml
 **/application.properties
-
+docker-compose.yml
 # Другие важные исключения для Java/Spring проекта
 **/target/
 *.class
