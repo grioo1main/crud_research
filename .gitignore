@@ -1,0 +1,14 @@
+# Application config с паролями и секретами
+**/application.yaml
+**/application.yml
+**/application.properties
+
+# Другие важные исключения для Java/Spring проекта
+**/target/
+*.class
+*.jar
+*.war
+*.log
+.idea/
+*.iml
+.DS_Store
